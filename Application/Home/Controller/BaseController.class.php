@@ -18,33 +18,13 @@ class BaseController extends Controller {
     protected static $username;
     protected static $password;
 
-    private $_cname;
-    private $_cinfo;
-    private $_cfav;
-    private $_cip;
-    private $_cqq;
-    private $_ctel;
-
-    private $_fav = array(
-        '动漫' => 1, '极客' => 2, '摄影' => 3,
-        '吃货' => 4, 'lol' => 5, '篮球' => 6,
-        '旅游' => 7, '电影' => 8, '学霸' => 9,
-        '健身' => 10, '音乐' => 11, '综艺' => 12,
-    );
-    private $_favid = array();
-    private $_favinsid = array();
-
-    /**
-     * 前置操作,判断用户登录情况
-     */
     public function _before_index(){
         if(!session('?stu_id')) {
             $this->assign(array(
-                'login1' => 'login1',
-                'login2' => 'login2',
-                'checkLogin' => '新生登录',
-                'checkState' => '#'
+
             ));
+            $this->display('Login/index');
+            exit;
         } else {
             $this->assign(array(
                 'login1' => 'loginnot1',
@@ -58,48 +38,25 @@ class BaseController extends Controller {
         }
     }
 
-    /**
-     * 登陆的入口方法
-     */
-    public function login() {
-        $this->_onLogging();
-        $this->_getStuInfo();
-    }
+    
+    // private function _onLogging() {
+    //     static::$studentnum = I(trim('post.studentnum'), 'htmlspecialchars');
+    //     static::$password = I(trim('post.password'));
+    //     if (!IS_POST && empty(static::$username) && empty(static::$password)) {
+    //         $this->ajaxReturn(array(
+    //             'status' => 302,
+    //             'info' => '请求数据有问题,请重试'
+    //         ));
+    //     }
+    // }
 
-    /**
-     * 登陆框登陆，并根据POST参数，返回status参数
-     * 私有方法
-     * $username:用户名字，$password：用户密码
-     * $password 注释方法 md5(hash('sha256', ($password >> ($password%3)).substr($password, 1, 3)));
-     * 共有方法，所有方法的入口
-     */
-    private function _onLogging() {
-        static::$username = I(trim('post.name'), 'htmlspecialchars');
-        static::$password = I(trim('post.pwd'));
-        if (!IS_POST && empty(static::$username) && empty(static::$password)) {
-            $this->ajaxReturn(array(
-                'status' => 302,
-                'info' => '请求数据有问题,请重试'
-            ));
-        }
-    }
-
-    /**
-     * 用户的具体登陆判断既登陆
-     * 做了ip判断，简单防刷
-     * IP判断为每次存储错误会注册session+1，到10次会禁止该次登陆，默认session存储时间24分钟
-     * 每10次会注册数据库blackip,到5次永久封
-     * 内部调用方法_saveSESSION存储session
-     * 登陆正确返回成功状态码200
-     */
     private function _getStuInfo(){  //查询学生
-        // md5(hash('sha256', ($password >> ($password%3)).substr($password, 1, 3)));
         $condition = array(
-            'stu_name' => static::$username,
-            'stu_passwd' => $static::$password
+            'studentnum' => static::$username,
+            'password' => static::$password
             // md5(hash('sha256', (static::$password >> (static::$password % 3)) . substr(static::$password, 1, 3)))
         );
-        $this->_cinfo = M('stuinfo');
+        $this->_cinfo = M('users');
         $stu = $this->_cinfo->where($condition)->find();
 
         //关于IP判断，防刷
@@ -214,7 +171,6 @@ class BaseController extends Controller {
         $this->_cfav = M('fav');
         $extraInfo['stu_id'] = session('stu_id') ? session('stu_id') : $this->_cname;
         $extra_exist = $this->_cfav->where($extraInfo)->find();
-        //兴趣爱好提交，如果填了一次第二次没有，就这么输入
         foreach($beh_arr as $val) {
             if (array_key_exists($val, $this->_fav)) {
                 $this->_favid[] = $this->_fav[$val];
@@ -254,28 +210,6 @@ class BaseController extends Controller {
         ));
     }
 
-    /**
-     * qq爱好窗口的判断方法，为填满及未填过返回201,202，同时弹窗
-     */
-    private function _checkExtraInfo(){
-        $id = session('stu_id');
-        if($id) {
-            cookie('IP_state', 0);
-            $extra = $this->_cinfo->where(array('stu_id' => $id))->getField('stu_id, stu_tel, stu_qq, stu_fav');
-            $extra = each($extra);
-            $extra = array_values($extra[1]);
-            list(, $tel, $qq, $fav) = $extra;
-            $fav_arr = explode(',', $fav);
-            if (!empty($tel) && !empty($qq) && count($fav_arr) == 3) {
-                $this->status_code = 201;
-                $this->status_msg .= ",信息完整";
-            } else {
-                $this->status_code = 202;
-                $this->status_msg = "信息未补充,请填写";
-            }
-        }
-    }
-
     private function _saveSession($data) {
         $_SESSION['stu_id'] = $data['stu_id'];
         $_SESSION['stu_name'] = $data['stu_name'];
@@ -291,20 +225,6 @@ class BaseController extends Controller {
         $_SESSION['stu_building'] = $data['stu_building'];
     }
 
-    /**
-     * 获取客户端IP地址
-     * @return mixed
-     */
-    private function _getIp(){
-        return get_client_ip();
-//         $Ip = new Org</br>et\IpLocation('UTFWry.dat'); // 实例化类 参数表示IP地址库文件
-//         $area = $Ip->getlocation($stuIp); // 获取某个IP地址所在的位置
-//         echo $area;
-    }
-
-    /**
-     * 注销退出用户方法
-     */
     public function destroySession(){
         session(null);
         $this->redirect(CONTROLLER_NAME . '/index');
