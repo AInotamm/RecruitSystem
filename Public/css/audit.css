@@ -1,0 +1,21 @@
+.pass{
+    float: right;
+    margin-left:10px;
+    background-color: #fff;
+}
+.new .waiting{
+    text-align: center;
+}
+.new .input_text{
+    padding: 5px 8px;
+}
+.new .input_text input{
+    max-width: 120px;
+    height: 24px;
+}
+.new .input_text:first-child input {
+    max-width: 145px;
+}
+.make-switch{
+    float: right;
+}

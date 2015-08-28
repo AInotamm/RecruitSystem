@@ -1,0 +1,47 @@
+.mbxl .toolbars{
+    float: right;
+    min-width: 200px;
+    border-radius: 4px !important;
+}
+.mbxl .toolbars input{
+    border-radius: 4px !important;
+}
+.mbxl .toolbars i{
+    margin-top: 8px;
+}
+.info-table-tboby tr td:last-child{
+    width: 200px;
+}
+.info-table-thead i{
+    position: relative;
+    left: 5px;
+}
+.info-table-thead .pointer{
+    cursor: pointer;
+}
+.info-table-tfoot td{
+    border-top: 1px solid #fff !important;
+}
+.info-table-tfoot tr:last-child td{
+    border-top: 1px solid #ddd !important;
+    border-bottom: 1px solid #ddd;
+    color: #999;
+    text-align: center;
+}
+.info-table-tboby tr,.info-table-tfoot tr{
+    cursor: pointer;
+}
+.info-table-tfoot>tr:last-child:hover>td {
+     background-color: #f5f5f5;
+}
+
+.modal-footer .anrolled,.modal-footer .passed,.modal-footer .invalid{
+    color: #777777;
+    background-color: #efefef;
+    border-color: #e5e5e5;
+    cursor: default;
+}
+
+.yellow{
+background-color: #ffff00;
+}

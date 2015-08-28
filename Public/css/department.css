@@ -1,0 +1,23 @@
+
+.screen{
+    height: 39px;
+    overflow: hidden;
+    position: relative;
+    padding-right: 35px;
+}
+.screen>i{
+    position: absolute;
+    right: 15px;
+    top:8px;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+}
+.screen ul{
+    position: relative;
+    top:0px;
+    transition:top;
+    -moz-transition:top 0.5s;
+    -webkit-transition:top 0.5s;
+    -o-transition:top 0.5s;
+}
