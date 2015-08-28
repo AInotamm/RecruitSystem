@@ -4,7 +4,9 @@ use Think\Controller;
 
 class IndexController extends BaseController {
     public function index(){
-        $this->display('Index/index');
+    	if(session('?studentnum')) {
+			$this->display('Index/index');
+		}
     }
     
     public function _empty() {
