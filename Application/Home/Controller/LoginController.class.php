@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class IndexController extends BaseController {
+class LoginController extends BaseController {
 	private $studentNum = '';
 	private $password = '';
     public function index(){
@@ -11,11 +11,11 @@ class IndexController extends BaseController {
         $this->_getInfo();
     }
 
-    private function(){
+    private function _getInfo(){
     	$cinfo = M('users');
     	$nowtime = time();
     	session('testnum') = '0';
-    	$condition(['studentnum'] = $this->studentNum;
+    	$condition['studentnum'] = $this->studentNum;
     	$condition['password'] = $this->password;
     	$stu = $cinfo->where($condition)->find();
     	if($cinfo){
