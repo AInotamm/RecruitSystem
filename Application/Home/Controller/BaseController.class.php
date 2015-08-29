@@ -1,12 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * Date: 15/8/11
- * Time: 03:08
- * @name:BaseController
- * @access:abstract
- * @version:thinkphp3.23, php5.6
- */
 namespace Home\Controller;
 use Think\Controller;
 
@@ -20,11 +12,11 @@ class BaseController extends Controller {
 
     public function _before_index(){
         if(!session('?stu_id')) {
-            $this->assign(array(
+            // $this->assign(array(
 
-            ));
-            $this->display('Login/index');
-            exit;
+            // ));
+            // $this->display('Login/index');
+            // exit;
         } else {
             $this->assign(array(
                 'login1' => 'loginnot1',
