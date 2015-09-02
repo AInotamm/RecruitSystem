@@ -34,7 +34,7 @@
                                                         <td></td>
                                                     </tr>
                                                     <volist name = "presidum" id = "presidum">
-                                                        <input type="hidden" name="id" id="user_id"  value="{$presidum.id}">
+                                                        <input type="hidden" name="id" id="presidum_id{$presidum.id}"  value="{$presidum.id}">
                                                         <tr>
                                                             <td>红岩网校工作站{$presidum.position}</td>
                                                             <td>{$presidum.stu_num}</td>
@@ -42,7 +42,7 @@
                                                             <td>{$presidum.gender}</td>
                                                             <td>{$presidum.phone}</td>
                                                             <td>{$presidum.academy}</td>
-                                                            <td><span class="label label-sm label-primary">删除</span></td>
+                                                            <td><button class="label label-sm label-primary" id = "{$presidum.id}">删除</button></td>
                                                         </tr>
                                                     </volist>
                                                 </tbody>
@@ -78,7 +78,7 @@
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
                                                             <select class="form-control" id="job" style="height: 31px;font-size: 12px;">
-                                                                <option>副主席</option>
+                                                                <option value = "6">副主席</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -93,26 +93,26 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">姓名</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">隆综艺</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchname"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">性别</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">男</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchgender"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">手机号</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">13888888888</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id ="searchphone"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">学院</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">妓院</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchacademy"></p>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
-                                        <button type="button" class="btn btn-primary">确认</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-default" id = "">取消</button>
+                                        <button type="button" class="btn btn-primary" id ="">确认</button>
                                     </div>
                                 </div>
                             </div>
@@ -124,3 +124,43 @@
 
     <include file="Layout:footer" />
 
+    <script>
+      // (function(){
+      //   var presidum_id=$("#presidum_id" + presidum_id).val();
+      //     $("#delete" + presidum_id).click(function(){
+      //       for()
+      //       $.post("{:U('Chairman/deletePre')}",
+      //       {
+      //         presidum_id:presidum_id,
+      //       },
+      //       function(data,status){
+
+      //       if(data == 1){
+      //         alert('成功');
+      //       }else{
+      //           alert(data);
+      //       }
+      //        parent.location.reload();
+      //       });
+      //     });
+      //   })();
+          (function(){
+              $("#studentID" ).change(function(){
+                var studentID=$("#studentID").val();
+                $.post("{:U('Chairman/searchStudent')}",
+                {
+                  studentID:studentID
+                },
+                function(data,status){
+                    $("#searchname").empty();
+                    $("#searchname").append(data['name']);
+                    $("#searchgender").empty();
+                    $("#searchgender").append(data['gender']);
+                    $("#searchphone").empty();
+                    $("#searchphone").append(data['phone']);
+                    $("#searchacademy").empty();
+                    $("#searchacademy").append(data['academy']);
+                });
+              });
+            })();
+    </script>
