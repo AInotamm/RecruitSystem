@@ -179,7 +179,7 @@
                             <li class="dropdown topbar-user">
                                 <a data-hover="dropdown" href="#" class="dropdown-toggle">
                                     <img src="" alt="" class="img-responsive img-circle" />&nbsp;
-                                    <span >John Doe</span>&nbsp;
+                                    <span >{$name}</span>&nbsp;
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user pull-right">
@@ -197,7 +197,7 @@
                                     </li>
                                     <li>
                                         <a href="extra-signin.html">
-                                            <i class="fa fa-key"></i>Log Out
+                                            <a href = "{$checkState}" class="fa fa-key"></i>{$checkLogin}
                                         </a>
                                     </li>
                                 </ul>
@@ -225,7 +225,7 @@
                             <li class="user-panel">
                                 <div class="thumb"><img src="" alt="" class="img-circle" /></div>
                                 <div class="info">
-                                    <p><a href = "{:U('Personal/index')}">John Doe</a></p>
+                                    <p><a href = "{:U('Personal/index')}">{$name}</a></p>
                                     <ul class="list-inline list-unstyled">
                                         <li><a href="extra-profile.html" data-hover="tooltip" title="Profile"><i class="fa fa-user"></i></a>
                                         </li>
@@ -257,7 +257,7 @@
                                 </a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="presidium">
+                                        <a href="{:U('Chairman/index')}">
                                             <i class="fa fa-group"></i>
                                             <span class="submenu-title">主席团详情</span>
                                         </a>

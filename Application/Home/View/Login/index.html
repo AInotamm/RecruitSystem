@@ -31,7 +31,7 @@
             <div class="body-content">
                 <div class="form-group">
                     <div class="input-icon right"><i class="fa fa-user"></i>
-                        <input type="text" placeholder="学号" name="studentnum" class="form-control">
+                        <input type="text" placeholder="学号" name="studentNum" class="form-control" maxlength= '10' onpaste="return false;"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
                     </div>
                 </div>
                 <div class="form-group">
