@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class PersonalController extends Controller{
+class PersonalController extends BaseController{
 	private $_cinfo;
 	private $_userRole;
 	private $_role;

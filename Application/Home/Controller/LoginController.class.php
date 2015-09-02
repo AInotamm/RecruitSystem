@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class LoginController extends BaseController {
+class LoginController extends Controller {
 	private $studentNum = '';
 	private $password = '';
     public function index(){
@@ -14,7 +14,7 @@ class LoginController extends BaseController {
     private function _getInfo(){
     	$cinfo = M('users');
     	$nowtime = time();
-    	session('testnum') = '0';
+    	session('testnum','0');
     	$condition['studentnum'] = $this->studentNum;
     	$condition['password'] = $this->password;
     	$stu = $cinfo->where($condition)->find();
@@ -22,23 +22,29 @@ class LoginController extends BaseController {
     		$this->initSession($stu);
     		$content['updated_at'] = date("Y-m-d H:i:s", time());
     		$cinfo->where($condition)->save($content);
+            $this->assign(array(
+                'checkLogin' => '退出登录',
+                'checkState' => U(CONTROLLER_NAME . '/destroySession')
+            ));
+            $this->assign('name' ,session('name'));
+            $this->display('Index/index');
     	}elseif(session('testnum') == 5){
     		if(!session('?lasttime')){
-    			session('lasttime') = $nowtime;
-    		}elseif{$nowtime - session('lasttime') < 600}{
+    			session('lasttime',$nowtime);
+    		}elseif($nowtime - session('lasttime') < 600){
     			echo 0;
     		}else{
-    			session('testnum') = 0;
+    			session('testnum',0);
     		}
     	}else{
-    		session('testnum') = session('testnum') + 1;
+    		session('testnum',session('testnum') + 1);
     	}
     }
     
     private function initSession($stu){
-    	session('name') = $stu['name'];
-    	session('studentnum') = $stu['studentnum'];
-    	session('gender') = $stu['gender'];
+    	session('name',$stu['name']);
+    	session('studentnum',$stu['studentnum']);
+    	session('gender',$stu['gender']);
 
     }
 
