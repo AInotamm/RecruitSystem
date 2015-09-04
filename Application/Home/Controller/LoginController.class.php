@@ -12,22 +12,26 @@ class LoginController extends Controller {
     }
 
     private function _getInfo(){
-    	$cinfo = M('users');
+    	$cinfo = D('users');
     	$nowtime = time();
     	session('testnum','0');
     	$condition['studentnum'] = $this->studentNum;
     	$condition['password'] = $this->password;
-    	$stu = $cinfo->where($condition)->find();
-    	if($cinfo){
-    		$this->initSession($stu);
-    		$content['updated_at'] = date("Y-m-d H:i:s", time());
-    		$cinfo->where($condition)->save($content);
-            $this->assign(array(
-                'checkLogin' => '退出登录',
-                'checkState' => U(CONTROLLER_NAME . '/destroySession')
-            ));
-            $this->assign('name' ,session('name'));
-            $this->display('Index/index');
+    	$stu = $cinfo->findUsers($condition);
+    	if($stu){
+            if($stu['state'] == '1'){
+        		$this->initSession($stu);
+        		$content['updated_at'] = date("Y-m-d H:i:s", time());
+        		$cinfo->where($condition)->save($content);
+                $this->assign(array(
+                    'checkLogin' => '退出登录',
+                    'checkState' => U(CONTROLLER_NAME . '/destroySession')
+                ));
+                $this->assign('name' ,session('name'));
+                $this->redirect('Index/index');
+            }else{
+                $this->error('账号已跪');
+            }
     	}elseif(session('testnum') == 5){
     		if(!session('?lasttime')){
     			session('lasttime',$nowtime);
@@ -49,6 +53,6 @@ class LoginController extends Controller {
     }
 
     public function _empty() {
-        $this->display('404/index');
+        $this->display('Errors/index');
     }
 }

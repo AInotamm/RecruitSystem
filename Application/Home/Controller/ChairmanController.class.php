@@ -6,6 +6,8 @@ class ChairmanController extends BaseController{
 	private $_presidum;
 	private $_users;
 	private $_academy;
+	private $_user_role;
+
 	public function index(){
 		$this->_presidumInit();
 		$this->_presidumVal();
@@ -13,9 +15,10 @@ class ChairmanController extends BaseController{
 	}
 
 	private function _presidumInit(){
-		$this->_presidum = M('presidum');
-		$this->_users = M('users');
-		$this->_academy = M('academy');
+		$this->_presidum = D('presidum');
+		$this->_users = D('users');
+		$this->_academy = D('academy');
+		$this->_user_role = D('userrole');
 	}
 
 	private function _presidumVal(){
@@ -25,10 +28,12 @@ class ChairmanController extends BaseController{
 	}
 
 	public function deletePre(){
+		$this->_presidumInit();
 		$condition['id'] = I('post.presidum_id');
 		$content['state'] = '0';
-		var_dump($content);exit;
 		$a = $this->_presidum->where($condition)->save($content);
+		$pre = $this->_presidum->getPre( I('post.presidum_id'));
+		$b =$this->_users->change_role($pre['user_id'],'3');
 		if($a){
 			echo 1;
 		}else{
@@ -37,29 +42,36 @@ class ChairmanController extends BaseController{
 	}
 
 	public function searchStudent(){
-		$this->_users = M('users');
-		$this->_academy = M('academy');
+		$this->_presidumInit();
 		$condition['studentnum'] = I('post.studentID');
-		$stu = $this->_users->where($condition)->find();
+		$stu = $this->_users->findUsers($condition);
 		$condition2['id'] = $stu['academy_id'];
-		$academy = $this->_academy->where($condition2)->find();
-		$stu['academy'] = $academy['academy'];
-		if($stu['gender'] == 1){
-			$stu['gender'] = '男';
-		}elseif($stu['gender'] == 0){
-			$stu['gender'] = '女';
-		}else{
-			$stu['gender'] = '人妖';
-		}
+		$academy = $this->_academy->findAcademy($condition2);
+		$stu['academy'] = $academy;
+		$stu['gender'] = $this->_users->checkgender($stu['gender']);
 		$this->ajaxReturn($stu);
 
 	}
 
 	public function addpre(){
-		
+		$this->_presidumInit();
+		$condition['studentnum'] = I('post.user_id');
+		$stu =$this->_users->findUsers($condition);
+		if($stu){
+			$academy = $this->_academy->findAcademy($condition2);
+			$gender = $this->_users->checkgender($stu['gender']);
+			$this->_user_role->addOne(I('post.organisation'),$stu['id'],I('post.position'));
+			$position = '副站';
+			$this->_presidum->addPresidum($stu,$academy,$gender,I('post.organisation'),$position);
+			echo '添加成功';
+		}else{
+			echo 0;
+		}
+
+
 	}
 	
 	public function _empty() {
-        $this->display('404/index');
+        $this->display('Errors/index');
     }
 }
