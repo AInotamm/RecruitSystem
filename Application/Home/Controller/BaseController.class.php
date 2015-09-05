@@ -17,12 +17,31 @@ class BaseController extends Controller {
         } else {
             $this->assign(array(
                 'checkLogin' => '退出登录',
-                'checkState' => U(CONTROLLER_NAME . '/destroySession')
+                'checkState' => U(CONTROLLER_NAME . '/destroySession'),
+                'checkOrga'=> U(CONTROLLER_NAME . '/checkOrg')
             ));
             $this->assign('name' ,session('name'));
+            $stu_role = D('userrole');
+            $org_ta = D('organization');
+            $condition['user_id'] = session('user_id');
+
+            $stu_org = $stu_role->findUsers_org($condition);
+            $org_num = $stu_role->where($condition)->count();        
+            for($i = 0 ;$i < $org_num;$i++){
+                $stu_org[$i]['org_name'] = $org_ta->checkOrg($stu_org[$i]['organization_id']);
+            }
+            $this->assign('org',$stu_org); 
+            if(!session('?now_org')){
+                session('now_org',$stu_org[0]['organization_id']);
+            }
         }
     }
 
+    public function checkOrg(){
+        $org_id = I('get.orgid');
+        session('now_org',$org_id);
+        $this->redirect('Index/index');
+    }
     public function destroySession(){
         session(null);
         $this->redirect(CONTROLLER_NAME . '/index');

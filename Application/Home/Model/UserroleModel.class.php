@@ -8,28 +8,29 @@ class UserroleModel extends Model {
 	}
 
 	public function findUser_role($condition){
-		$this->setUsers();
+		$this->setUser_role();
 		$stu = $this->_user_role->where($condition)->find();
-		return $stu['user_role'];
+		return $stu['role_id'];
 	}
 
-	public function addOne($organisation_id,$user_id,$position){
+	public function findUsers_org($condition){
+		$this->setUser_role();
+		$stu = $this->_user_role->where($condition)->select();
+		return $stu;
+	}
+	public function addOne($user_id,$position){
 		$this->setUser_role();
 		$content['user_id'] = $user_id;
 		$content['role_id'] = $position;
-		$content['department_id'] = $organisation_id;
+		$content['organisation_id'] = session('now_org');
 		$condition['user_id'] = $user_id;
-		$condition['department_id'] = '1';
+		$condition['organisation_id'] =  session('now_org');
 		$stu = $this->_user_role->where($condition)->find();
-		if($organisation_id = 1){
 			if($stu){
-					$this->_user_role->where($condition)->save($content);
+				$this->_user_role->where($condition)->save($content);
 			}else{
 				$this->_user_role->add($content);
 			}
-		}else{
-
-		}
 	}
 
 	public function changeRole($user_id,$role_id){

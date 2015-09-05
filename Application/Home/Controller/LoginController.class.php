@@ -44,8 +44,9 @@ class LoginController extends Controller {
     		session('testnum',session('testnum') + 1);
     	}
     }
-    
+
     private function initSession($stu){
+        session('user_id',$stu['id']);
     	session('name',$stu['name']);
     	session('studentnum',$stu['studentnum']);
     	session('gender',$stu['gender']);

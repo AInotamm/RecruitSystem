@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul id="tableactiondTab" class="nav nav-tabs">
-                            <li class="active"><a href="#" data-toggle="tab">红岩网校工作站</a></li>
+                            <li class="active"><a href="#" data-toggle="tab">{$orgname}</a></li>
                         </ul>
                         <div id="tableactionTabContent" class="tab-content">
                             <div id="" class="tab-pane fade active in">
@@ -24,19 +24,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>红岩网校工作站站长</td>
-                                                        <td>2013210000</td>
-                                                        <td>咬不碎</td>
-                                                        <td>男</td>
-                                                        <td>13988888888</td>
-                                                        <td>妓院</td>
-                                                        <td></td>
-                                                    </tr>
                                                     <volist name = "presidum" id = "presidum">
                                                         <input type="hidden" name="id" id="presidum_id{$presidum.id}"  value="{$presidum.id}">
                                                         <tr>
-                                                            <td>红岩网校工作站{$presidum.position}</td>
+                                                            <td>{$orgname}{$presidum.position}</td>
                                                             <td>{$presidum.stu_num}</td>
                                                             <td>{$presidum.name}</td>
                                                             <td>{$presidum.gender}</td>
@@ -61,15 +52,16 @@
                                         <h4 id="modal-prompt-label" class="modal-title">新人员添加</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{:U('Chairman/addpre')}" class="form-horizontal" method = "post">
+                                        <form  class="form-horizontal" method = "post">
                                             <div class="form-body pal">
                                                 <div class="form-group">
                                                     <label for="presidium" class="col-md-3 control-label">组织</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <select class="form-control" id="organisation" style="height: 31px;font-size: 12px;" name = "organisation">
-                                                                <option value ='1' >红岩网校工作站</option>
-                                                            </select>
+                                                            <p class="col-md-9 control-label" style="text-align: left" id = "">
+                                                                红岩网校工作站
+                                                                <input type="hidden" name="id" id="organisation"  value="1">
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -172,16 +164,15 @@
                 var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
                 $.post("{:U('Chairman/deletePre')}",
                 {
-                  presidum_id:id,
+                  presidum_id:id
                 },
                 function(data,status){
-
                     if(data == 1){
                       $(this).closest('tr').remove();
-                       parent.location.reload();
                     }else{
                         alert(data);
                     }
+                    parent.location.reload();
                 });
             });
         });
@@ -192,21 +183,21 @@
                 var user_id=$("#studentID").val();
                 var organisation=$("#organisation").val();
                 var position=$("#position").val();
-                    $.post("{:U('Chairman/addpre')}",
-                    {
-                      user_id:user_id,
-                      organisation:organisation,
-                      position:position
-                    },
-                    function(data,status){
-                        alert(1);
-                        if(data == 0){
-                          alert('输入信息有误');
-                        }else{
-                            parent.location.reload();
-                            alert(data);
-                        }
-                    });                
+                $.post("{:U('Chairman/addpre')}",
+                {
+                  user_id:user_id,
+                  organisation:organisation,
+                  position:position
+                },
+                function(data,status){
+                    if(data == 0){
+                      alert('输入信息有误');
+                    }else{
+                        
+                        alert(data);
+                    }
+                    parent.location.reload();
+                });                
             });
         })(); 
     </script>
