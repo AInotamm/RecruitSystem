@@ -1,4 +1,14 @@
     <include file="Layout:header" />
+    <!--LOADING STYLESHEET FOR PAGE-->
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/media/css/jquery.dataTables.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/extensions/TableTools/css/dataTables.tableTools.min.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/media/css/dataTables.bootstrap.css">
+    <style>
+        #table_id thead tr > th {
+            border-bottom: #efefef;
+        }
+    </style>
+    <include file="Layout:slider" />
         <div id="page-wrapper">
             <div class="page-content">
                 <div class="row">
@@ -11,7 +21,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="table-container">
-                                            <table class="table table-hover">
+                                            <table id="table_id" class="table table-hover table-striped tablesorter display">
                                                 <thead>
                                                     <tr>
                                                         <th>职位</th>
@@ -20,11 +30,12 @@
                                                         <th>性别</th>
                                                         <th>手机号</th>
                                                         <th>学院</th>
+                                                        <th>更新时间</th>
                                                         <th width="60px">操作</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <volist name = "presidum" id = "presidum">
+                                                    <volist name="presidum" id="presidum">
                                                         <input type="hidden" name="id" id="presidum_id{$presidum.id}"  value="{$presidum.id}">
                                                         <tr>
                                                             <td>{$orgname}{$presidum.position}</td>
@@ -33,7 +44,8 @@
                                                             <td>{$presidum.gender}</td>
                                                             <td>{$presidum.phone}</td>
                                                             <td>{$presidum.academy}</td>
-                                                            <td><span class="label label-sm label-primary userid-{$presidum.id}">删除</span></td>
+                                                            <td>{$presidum.update}</td>
+                                                            <td><button class="btn btn-default btn-xs userid-{$presidum.id}" need="author">删除</button></td>
                                                         </tr>
                                                     </volist>
                                                 </tbody>
@@ -43,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;" id = "adduser">人员添加</button>
+                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;" id="adduser" need="author">人员添加</button>
                         <div id="modal-add-people" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-label" aria-hidden="true" class="modal fade" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -58,7 +70,7 @@
                                                     <label for="presidium" class="col-md-3 control-label">组织</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <p class="col-md-9 control-label" style="text-align: left" id = "">
+                                                            <p class="col-md-9 control-label" style="text-align: left">
                                                                 红岩网校工作站
                                                                 <input type="hidden" name="id" id="organisation"  value="1">
                                                             </p>
@@ -79,31 +91,32 @@
                                                     <label for="studentID" class="col-md-3 control-label">学号</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <input id="studentID" type="text" placeholder="请输入需要新添加人员的学号" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important" name = "user_id">
+                                                            <input id="studentID" type="text" placeholder="请输入需要新添加人员的学号" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important" name="user_id">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">姓名</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchname"></p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id="searchname">暂无信息</p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">性别</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchgender"></p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id="searchgender">暂无信息</p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">手机号</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left" id ="searchphone"></p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id="searchphone">暂无信息</p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">学院</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchacademy"></p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id="searchacademy">暂无信息</p>
                                                 </div>
                                             </div>
+                                        </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn btn-default" id = "">取消</button>
-                                        <button type="button" class="btn btn-primary" id ="submit">确认</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                                        <button type="button" class="btn btn-primary" id="submit">确认</button>
                                     </div>
                                     </form>
                                 </div>
@@ -115,108 +128,66 @@
         </div>
 
     <include file="Layout:footer" />
-
+    <!--LOADING SCRIPTS FOR PAGE-->
+    <script src="__PUBLIC__/vendors/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="__PUBLIC__/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
+    <script src="__PUBLIC__/vendors/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="__PUBLIC__/vendors/DataTables/datatable.js"></script>
     <script>
           (function(){
-              $("#studentID" ).change(function(){
-                var studentID=$("#studentID").val();
-                $.post("{:U('Chairman/searchStudent')}",
-                {
-                  studentID:studentID
-                },
-                function(data,status){
-                    $("#searchname").empty();
-                    $("#searchname").append(data['name']);
-                    $("#searchgender").empty();
-                    $("#searchgender").append(data['gender']);
-                    $("#searchphone").empty();
-                    $("#searchphone").append(data['phone']);
-                    $("#searchacademy").empty();
-                    $("#searchacademy").append(data['academy']);
-                });
+              var student, obj, ch;
+              var text = ['name', 'gender', 'phone', 'academy'];
+              $('#studentID').bind('input propertychange', function() {
+                  student = $(this);
+                  var id = student.val();
+                  $.post('{:U("Chairman/searchStudent")}', {studentID: id}).always(function(data, status) {
+                      ch = student.closest('.form-group').nextAll();
+                      ch.each(function(e) {
+                          obj = $(this).find('.col-md-9');
+                          obj.empty();
+                          if(obj.val() === '') {
+                              if(data == null) {
+                                  obj.append('暂无信息');
+                              } else {
+                                  obj.append(data[text[e]]);
+                              }
+                          }
+                      })
+                  }).fail(function() {
+
+                  })
+              });
+
+              var button = $('tr > td > span');
+              $(button).each(function() {
+                  $(this).on('click', function() {
+                      var clazz = this.className.split(' ');
+                      var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
+                      $.post("{:U('Chairman/deletePre')}", {presidum_id:id}).done(function(data, status) {
+
+                      })
+                  });
+              });
+              $("#submit").click(function(){
+                  var user_id=$("#studentID").val();
+                  var organisation=$("#organisation").val();
+                  var position=$("#position").val();
+                  $.post("{:U('Chairman/addpre')}",
+                          {
+                              user_id:user_id,
+                              organisation:organisation,
+                              position:position
+                          },
+                          function(data,status){
+                              if(data == 0) {
+                                  alert('输入信息有误');
+                              } else {
+                                  alert(data);
+                              }
+                              parent.location.reload();
+                          });
               });
             })();
     </script>
-    <script>
-    (function(){
-     $("#check_pre_role").click(function(){
-            $.post("{:U('Chairman/checkrole')}",
-            {
-
-            },
-            function(data,status){
-                alert(data);
-                if(data == 0){
-                    var button = $('tr > td > span');
-                    $(button).each(function() {
-                        $(this).empty();
-                    });
-                    $('#adduser').empty();
-                }else{
-                  var button = $('tr > td > span');
-                    $(button).each(function() {
-                        $(this).on('click', function() {
-                            var clazz = this.className.split(' ');
-                            var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
-                            $.post("{:U('Chairman/deletePre')}",
-                            {
-                              presidum_id:id
-                            },
-                            function(data,status){
-                                if(data == 1){
-                                  $(this).closest('tr').remove();
-                                }else{
-                                    alert(data);
-                                }
-                                parent.location.reload();
-                            });
-                        });
-                    });
-                }
-            });                
-        });
-    })(); 
-            // var button = $('tr > td > span');
-            // $(button).each(function() {
-            //     $(this).on('click', function() {
-            //         var clazz = this.className.split(' ');
-            //         var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
-            //         $.post("{:U('Chairman/deletePre')}",
-            //         {
-            //           presidum_id:id
-            //         },
-            //         function(data,status){
-            //             if(data == 1){
-            //               $(this).closest('tr').remove();
-            //             }else{
-            //                 alert(data);
-            //             }
-            //             parent.location.reload();
-            //         });
-            //     });
-            // });
-    </script>
-    <script>
-        (function(){
-            $("#submit").click(function(){
-                var user_id=$("#studentID").val();
-                var organisation=$("#organisation").val();
-                var position=$("#position").val();
-                $.post("{:U('Chairman/addpre')}",
-                {
-                  user_id:user_id,
-                  organisation:organisation,
-                  position:position
-                },
-                function(data,status){
-                    if(data == 0){
-                      alert('输入信息有误');
-                    }else{
-                        
-                        alert(data);
-                    }
-                    parent.location.reload();
-                });                
-            });
-        })(); 
-    </script>
+    </body>
+    </html>

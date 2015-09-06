@@ -8,10 +8,20 @@ class ChairmanController extends BaseController{
 	private $_academy;
 	private $_user_role;
 	private $_organization;
+
 	public function index(){
 		$this->_presidumInit();
 		$this->_presidumVal();
-		$this->display('Chairman/presidium');
+        $html = $this->fetch('Chairman/presidium');
+        $html = preg_replace('/\sneed=\"author\"/', $this->checkrole(), $html);
+        if(isset($html)) {
+            header('Content-Type:' . C('DEFAULT_CHARSET') . '; charset=' . C('TMPL_CONTENT_TYPE'));
+            header('Cache-control: ' . C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
+            header('X-Powered-By:ThinkPHP');
+            echo $html;
+        } else {
+            $this->redirect('Errors/503');
+        }
 	}
 
 	private function _presidumInit(){
@@ -29,8 +39,8 @@ class ChairmanController extends BaseController{
 		$orgname = $org_name['organization'];
 		$this->assign('orgname',$orgname);
 		$this->assign('presidum',$presidum);
-		if($user_role == 7){
-			$this->assign('pre_but',$but);
+		if($this->_user_role == 7){
+//			$this->assign('pre_but',$but);
 		}
 	}
 
@@ -38,10 +48,10 @@ class ChairmanController extends BaseController{
 		$this->_presidumInit();
 		$content['state'] = '0';
 		$condition['id'] = I('post.presidum_id');
-		$condition['organisation'] =session('now_org');
+		$condition['organisation'] = session('now_org');
 		$pre_info = $this->_presidum->findPresidum($condition);
 		$condition3['user_id'] = $pre_info['user_id'];
-		$condition3['organization'] = session('now_org');
+		$condition3['organization'] = $condition['organisation'];
 		$pre_role = $this->_user_role->findUser_role($condition3);
 		if($pre_role['role_id'] == '7'){
 			echo "不能删除主席";
@@ -62,20 +72,15 @@ class ChairmanController extends BaseController{
 		$this->_presidumInit();
 		$condition['studentnum'] = I('post.studentID');
 		$stu = $this->_users->findUsers($condition);
-		$condition2['id'] = $stu['academy_id'];
-		$academy = $this->_academy->findAcademy($condition2);
-		$stu['academy'] = $academy;
-		$stu['gender'] = $this->_users->checkgender($stu['gender']);
-		$this->ajaxReturn($stu);
-
-	}
-	public function checkrole(){
-		if( session('user_role') < 6){
-			$this->ajaxReturn('1');
-		}else{
-			$this->ajaxReturn('1');
+		if(isset($stu)) {
+			$condition2['id'] = $stu['academy_id'];
+			$academy = $this->_academy->findAcademy($condition2);
+			$stu['academy'] = $academy;
+			$stu['gender'] = $this->_users->checkgender($stu['gender']);
 		}
+		$this->ajaxReturn($stu);
 	}
+
 	public function addpre(){
 		if( session('user_role') < 6){
 			$this->ajaxReturn('0');

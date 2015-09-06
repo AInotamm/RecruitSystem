@@ -3,23 +3,23 @@ namespace Home\Model;
 use Think\Model;
 class UsersModel extends Model {
 	private $_users;
-	public function setUsers(){
+	public function setUsers() {
 		$this->_users = M('users');
 	}
 
-	public function findUsers($condition){
+	public function findUsers($condition) {
 		$this->setUsers();
 		$stu = $this->_users->where($condition)->find();
 		return $stu;
 	}
 
-	public function checkgender($condition){
-		$user_gender ='not set';
-		if($condition == 1){
+	public function checkgender($condition) {
+		$user_gender ='未设置';
+		if($condition == 1) {
 			$user_gender = '男';
-		}elseif($condition == 0){
+		} else if($condition == 0) {
 			$user_gender = '女';
-		}		
+		}
 		return $user_gender;
 	}
 }

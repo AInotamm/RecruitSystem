@@ -7,6 +7,7 @@ class BaseController extends Controller {
     private $status_code;
     private $status_msg;
     private $_user_role;
+
     public function _before_index(){
         if(!session('?name')) {
             $this->assign(array(
@@ -39,6 +40,14 @@ class BaseController extends Controller {
                 $user_role = $this->_user_role->findUser_role($condition);
                 session('user_role',$user_role);
             }
+        }
+    }
+
+    protected function checkrole() {
+        if(session('user_role') == 7){
+            return '';
+        } else {
+            return 'disabled="disabled"';
         }
     }
 

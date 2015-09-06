@@ -5,6 +5,7 @@ use Think\Controller;
 class LoginController extends Controller {
 	private $studentNum = '';
 	private $password = '';
+
     public function index(){
     	$this->studentNum = I('post.studentNum');
         $this->password = I('post.password');
@@ -18,8 +19,8 @@ class LoginController extends Controller {
     	$condition['studentnum'] = $this->studentNum;
     	$condition['password'] = $this->password;
     	$stu = $cinfo->findUsers($condition);
-    	if($stu){
-            if($stu['state'] == '1'){
+    	if($stu) {
+            if($stu['state'] == '1') {
         		$this->initSession($stu);
         		$content['updated_at'] = date("Y-m-d H:i:s", time());
         		$cinfo->where($condition)->save($content);
@@ -29,30 +30,29 @@ class LoginController extends Controller {
                 ));
                 $this->assign('name' ,session('name'));
                 $this->redirect('Index/index');
-            }else{
+            } else {
                 $this->error('账号已跪');
             }
-    	}elseif(session('testnum') == 5){
-    		if(!session('?lasttime')){
+    	} else if(session('testnum') == 5) {
+    		if(!session('?lasttime')) {
     			session('lasttime',$nowtime);
-    		}elseif($nowtime - session('lasttime') < 600){
-    			echo 0;
-    		}else{
+    		} else if($nowtime - session('lasttime') < 600) {
+                echo 0;
+    		} else {
     			session('testnum',0);
     		}
             $this->error('超过尝试次数');
-    	}else{
+    	} else {
     		session('testnum',session('testnum') + 1);
             $this->error('密码错误');
     	}
     }
 
-    private function initSession($stu){
+    private function initSession($stu) {
         session('user_id',$stu['id']);
     	session('name',$stu['name']);
     	session('studentnum',$stu['studentnum']);
     	session('gender',$stu['gender']);
-
     }
 
     public function _empty() {

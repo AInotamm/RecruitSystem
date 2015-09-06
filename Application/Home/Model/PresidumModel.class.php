@@ -19,17 +19,20 @@ class PresidumModel extends Model {
 		$condition['organisation'] = session('now_org');
 		$pre = $this->findPresidum($condition);
 
-		if($pre){
-			echo "该主席已存在";exit;
-		}else{
-			$content['name'] = $stu['name'];
-			$content['gender'] = $gender;
-			$content['user_id'] = $stu['id'];
-			$content['phone']  = $stu['phone'];
-			$content['stu_num'] = $stu['studentnum'];
-			$content['academy'] = $academy;
-			$content['organisation'] = session('now_org');
-			$content['position'] = $position;
+		if($pre) {
+			echo "该主席已存在"; exit;
+		} else {
+            $content = array(
+                'name' => $stu['name'],
+                'gender' => $gender,
+                'user_id' => $stu['id'],
+                'phone' => $stu['phone'],
+                'stu_num' => $stu['studentnum'],
+                'academy' => $academy,
+                'organisation' => session('now_org'),
+                'position' => $position,
+                'update' => date('Y-m-d H:i:s', time()),
+            );
 			$this->_presidum->add($content);
 		}
 
