@@ -15,7 +15,7 @@ class PersonalController extends BaseController{
 
 	private function _obInit(){
 		$this->_cinfo = M('users');
-		$this->_userRole = M('user_role');
+		$this->_userRole = M('userrole');
 		$this->_role = M('role');
 		$this->academy = M('academy');		
 	}
@@ -66,4 +66,7 @@ class PersonalController extends BaseController{
 		// }
 		
 	}
+	public function _empty() {
+        $this->display('Errors/index');
+    }
 }
