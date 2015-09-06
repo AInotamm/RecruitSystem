@@ -27,7 +27,7 @@ class LoginController extends Controller {
                 'checkState' => U(CONTROLLER_NAME . '/destroySession')
             ));
             $this->assign('name' ,session('name'));
-            $this->display('Index/index');
+            $this->redirect('Index/index');
     	}elseif(session('testnum') == 5){
     		if(!session('?lasttime')){
     			session('lasttime',$nowtime);
