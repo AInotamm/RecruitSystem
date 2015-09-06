@@ -12,6 +12,11 @@ class UsersModel extends Model {
 		$stu = $this->_users->where($condition)->find();
 		return $stu;
 	}
+	public function selectUsers($condition){
+		$this->setUsers();
+		$stu = $this->_users->where($condition)->select();
+		return $stu;
+	}
 
 	public function checkgender($condition) {
 		$user_gender ='未设置';
