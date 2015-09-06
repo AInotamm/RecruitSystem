@@ -8,8 +8,7 @@ class IndexController extends BaseController {
 			$this->display('Index/index');
 		// }
     }
-    
     public function _empty() {
-        $this->display('404/index');
+        $this->display('Errors/index');
     }
 }

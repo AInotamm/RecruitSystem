@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul id="tableactiondTab" class="nav nav-tabs">
-                            <li class="active"><a href="#" data-toggle="tab">红岩网校工作站</a></li>
+                            <li class="active"><a href="#" data-toggle="tab">{$orgname}</a></li>
                         </ul>
                         <div id="tableactionTabContent" class="tab-content">
                             <div id="" class="tab-pane fade active in">
@@ -24,18 +24,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <!--<tr>-->
-                                                        <!--<td>红岩网校工作站站长</td>-->
-                                                        <!--<td>2013210000</td>-->
-                                                        <!--<td>咬不碎</td>-->
-                                                        <!--<td>男</td>-->
-                                                        <!--<td>13988888888</td>-->
-                                                        <!--<td>妓院</td>-->
-                                                        <!--<td><span class="label label-sm label-primary">删除</span></td>-->
-                                                    <!--</tr>-->
-                                                    <volist name="presidum" id="presidum">
+                                                    <volist name = "presidum" id = "presidum">
+                                                        <input type="hidden" name="id" id="presidum_id{$presidum.id}"  value="{$presidum.id}">
                                                         <tr>
-                                                            <td>红岩网校工作站{$presidum.position}</td>
+                                                            <td>{$orgname}{$presidum.position}</td>
                                                             <td>{$presidum.stu_num}</td>
                                                             <td>{$presidum.name}</td>
                                                             <td>{$presidum.gender}</td>
@@ -51,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;">人员添加</button>
+                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;" id = "adduser">人员添加</button>
                         <div id="modal-add-people" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-label" aria-hidden="true" class="modal fade" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -60,15 +52,16 @@
                                         <h4 id="modal-prompt-label" class="modal-title">新人员添加</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" class="form-horizontal">
+                                        <form  class="form-horizontal" method = "post">
                                             <div class="form-body pal">
                                                 <div class="form-group">
                                                     <label for="presidium" class="col-md-3 control-label">组织</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <select class="form-control" id="presidium" style="height: 31px;font-size: 12px;">
-                                                                <option>红岩网校工作站</option>
-                                                            </select>
+                                                            <p class="col-md-9 control-label" style="text-align: left" id = "">
+                                                                红岩网校工作站
+                                                                <input type="hidden" name="id" id="organisation"  value="1">
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -76,8 +69,8 @@
                                                     <label for="job" class="col-md-3 control-label">职位</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <select class="form-control" id="job" style="height: 31px;font-size: 12px;">
-                                                                <option>副主席</option>
+                                                            <select class="form-control" id="position" style="height: 31px;font-size: 12px;" name ="position">
+                                                                <option value = "6">副主席</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -86,33 +79,33 @@
                                                     <label for="studentID" class="col-md-3 control-label">学号</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <input id="studentID" type="text" placeholder="请输入需要新添加人员的学号" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important">
+                                                            <input id="studentID" type="text" placeholder="请输入需要新添加人员的学号" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important" name = "user_id">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">姓名</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">隆综艺</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchname"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">性别</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">男</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchgender"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">手机号</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">13888888888</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id ="searchphone"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <p class="col-md-3 control-label">学院</p>
-                                                    <p class="col-md-9 control-label" style="text-align: left">妓院</p>
+                                                    <p class="col-md-9 control-label" style="text-align: left" id = "searchacademy"></p>
                                                 </div>
                                             </div>
-                                        </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
-                                        <button type="button" class="btn btn-primary">确认</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-default" id = "">取消</button>
+                                        <button type="button" class="btn btn-primary" id ="submit">确认</button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -121,27 +114,109 @@
             </div>
         </div>
 
-
-
     <include file="Layout:footer" />
 
     <script>
-        var button = $('tr > td > span');
-        $(button).each(function() {
-            $(this).on('click', function() {
-                $.ajax({
-                    // TODO 增加一个删除方法就行了
+          (function(){
+              $("#studentID" ).change(function(){
+                var studentID=$("#studentID").val();
+                $.post("{:U('Chairman/searchStudent')}",
+                {
+                  studentID:studentID
+                },
+                function(data,status){
+                    $("#searchname").empty();
+                    $("#searchname").append(data['name']);
+                    $("#searchgender").empty();
+                    $("#searchgender").append(data['gender']);
+                    $("#searchphone").empty();
+                    $("#searchphone").append(data['phone']);
+                    $("#searchacademy").empty();
+                    $("#searchacademy").append(data['academy']);
                 });
-                /*
-                *  var clazz = this.className.split(' ');
-                *  var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
-                *  这两个变量是用来获取 userid 的隐藏值
-                * */
-                // $(this).closest('tr').remove();  直接删除 DOM 元素
-            });
-        });
-
+              });
+            })();
     </script>
+    <script>
+    (function(){
+     $("#check_pre_role").click(function(){
+            $.post("{:U('Chairman/checkrole')}",
+            {
 
-    </body>
-    </html>
+            },
+            function(data,status){
+                alert(data);
+                if(data == 0){
+                    var button = $('tr > td > span');
+                    $(button).each(function() {
+                        $(this).empty();
+                    });
+                    $('#adduser').empty();
+                }else{
+                  var button = $('tr > td > span');
+                    $(button).each(function() {
+                        $(this).on('click', function() {
+                            var clazz = this.className.split(' ');
+                            var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
+                            $.post("{:U('Chairman/deletePre')}",
+                            {
+                              presidum_id:id
+                            },
+                            function(data,status){
+                                if(data == 1){
+                                  $(this).closest('tr').remove();
+                                }else{
+                                    alert(data);
+                                }
+                                parent.location.reload();
+                            });
+                        });
+                    });
+                }
+            });                
+        });
+    })(); 
+            // var button = $('tr > td > span');
+            // $(button).each(function() {
+            //     $(this).on('click', function() {
+            //         var clazz = this.className.split(' ');
+            //         var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
+            //         $.post("{:U('Chairman/deletePre')}",
+            //         {
+            //           presidum_id:id
+            //         },
+            //         function(data,status){
+            //             if(data == 1){
+            //               $(this).closest('tr').remove();
+            //             }else{
+            //                 alert(data);
+            //             }
+            //             parent.location.reload();
+            //         });
+            //     });
+            // });
+    </script>
+    <script>
+        (function(){
+            $("#submit").click(function(){
+                var user_id=$("#studentID").val();
+                var organisation=$("#organisation").val();
+                var position=$("#position").val();
+                $.post("{:U('Chairman/addpre')}",
+                {
+                  user_id:user_id,
+                  organisation:organisation,
+                  position:position
+                },
+                function(data,status){
+                    if(data == 0){
+                      alert('输入信息有误');
+                    }else{
+                        
+                        alert(data);
+                    }
+                    parent.location.reload();
+                });                
+            });
+        })(); 
+    </script>
