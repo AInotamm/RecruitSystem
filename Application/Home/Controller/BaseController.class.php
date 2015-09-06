@@ -6,7 +6,7 @@ class BaseController extends Controller {
 
     private $status_code;
     private $status_msg;
-
+    private $_user_role;
     public function _before_index(){
         if(!session('?name')) {
             $this->assign(array(
@@ -15,6 +15,7 @@ class BaseController extends Controller {
             $this->display('Login/index');
             exit;
         } else {
+            $this->_user_role = D('userrole');
             $this->assign(array(
                 'checkLogin' => '退出登录',
                 'checkState' => U(CONTROLLER_NAME . '/destroySession'),
@@ -33,6 +34,10 @@ class BaseController extends Controller {
             $this->assign('org',$stu_org); 
             if(!session('?now_org')){
                 session('now_org',$stu_org[0]['organization_id']);
+                $condition['oragnization_id'] = session('now_org');
+                $condition['user_id'] = session('user_id');
+                $user_role = $this->_user_role->findUser_role($condition);
+                session('user_role',$user_role);
             }
         }
     }
@@ -40,6 +45,11 @@ class BaseController extends Controller {
     public function checkOrg(){
         $org_id = I('get.orgid');
         session('now_org',$org_id);
+        $condition['oragnization_id'] = session('now_org');
+        $condition['user_id'] = session('user_id');
+        $this->_user_role = D('userrole');
+        $user_role = $this->_user_role->findUser_role($condition);
+        session('user_role',$user_role);
         $this->redirect('Index/index');
     }
     public function destroySession(){

@@ -40,8 +40,10 @@ class LoginController extends Controller {
     		}else{
     			session('testnum',0);
     		}
+            $this->error('超过尝试次数');
     	}else{
     		session('testnum',session('testnum') + 1);
+            $this->error('密码错误');
     	}
     }
 

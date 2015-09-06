@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;">人员添加</button>
+                        <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="float: right;background-color: #fff;" id = "adduser">人员添加</button>
                         <div id="modal-add-people" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-label" aria-hidden="true" class="modal fade" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -117,25 +117,6 @@
     <include file="Layout:footer" />
 
     <script>
-      // (function(){
-      //   var presidum_id=$("#presidum_id" + presidum_id).val();
-      //     $("#delete" + presidum_id).click(function(){
-      //       for()
-      //       $.post("{:U('Chairman/deletePre')}",
-      //       {
-      //         presidum_id:presidum_id,
-      //       },
-      //       function(data,status){
-
-      //       if(data == 1){
-      //         alert('成功');
-      //       }else{
-      //           alert(data);
-      //       }
-      //        parent.location.reload();
-      //       });
-      //     });
-      //   })();
           (function(){
               $("#studentID" ).change(function(){
                 var studentID=$("#studentID").val();
@@ -157,25 +138,63 @@
             })();
     </script>
     <script>
-        var button = $('tr > td > span');
-        $(button).each(function() {
-            $(this).on('click', function() {
-                var clazz = this.className.split(' ');
-                var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
-                $.post("{:U('Chairman/deletePre')}",
-                {
-                  presidum_id:id
-                },
-                function(data,status){
-                    if(data == 1){
-                      $(this).closest('tr').remove();
-                    }else{
-                        alert(data);
-                    }
-                    parent.location.reload();
-                });
-            });
+    (function(){
+     $("#check_pre_role").click(function(){
+            $.post("{:U('Chairman/checkrole')}",
+            {
+
+            },
+            function(data,status){
+                alert(data);
+                if(data == 0){
+                    var button = $('tr > td > span');
+                    $(button).each(function() {
+                        $(this).empty();
+                    });
+                    $('#adduser').empty();
+                }else{
+                  var button = $('tr > td > span');
+                    $(button).each(function() {
+                        $(this).on('click', function() {
+                            var clazz = this.className.split(' ');
+                            var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
+                            $.post("{:U('Chairman/deletePre')}",
+                            {
+                              presidum_id:id
+                            },
+                            function(data,status){
+                                if(data == 1){
+                                  $(this).closest('tr').remove();
+                                }else{
+                                    alert(data);
+                                }
+                                parent.location.reload();
+                            });
+                        });
+                    });
+                }
+            });                
         });
+    })(); 
+            // var button = $('tr > td > span');
+            // $(button).each(function() {
+            //     $(this).on('click', function() {
+            //         var clazz = this.className.split(' ');
+            //         var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
+            //         $.post("{:U('Chairman/deletePre')}",
+            //         {
+            //           presidum_id:id
+            //         },
+            //         function(data,status){
+            //             if(data == 1){
+            //               $(this).closest('tr').remove();
+            //             }else{
+            //                 alert(data);
+            //             }
+            //             parent.location.reload();
+            //         });
+            //     });
+            // });
     </script>
     <script>
         (function(){

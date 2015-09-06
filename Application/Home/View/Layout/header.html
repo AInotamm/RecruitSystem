@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>{{$title}}</title>
+        <title>学生组织管理系统</title>
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300">
         <link rel="stylesheet" href="__PUBLIC__/vendors/font-awesome/css/font-awesome.min.css">
@@ -135,13 +135,13 @@
                                 </a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{:U('Chairman/index')}">
+                                        <a href="{:U('Chairman/index')}" id = "check_pre_role">
                                             <i class="fa fa-group"></i>
                                             <span class="submenu-title">主席团详情</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="department">
+                                        <a href="{:U('Department/index')}">
                                             <i class="fa fa-sitemap"></i>
                                             <span class="submenu-title">部门详情</span>
                                         </a>

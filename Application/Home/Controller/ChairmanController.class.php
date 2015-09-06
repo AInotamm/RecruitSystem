@@ -29,6 +29,9 @@ class ChairmanController extends BaseController{
 		$orgname = $org_name['organization'];
 		$this->assign('orgname',$orgname);
 		$this->assign('presidum',$presidum);
+		if($user_role == 7){
+			$this->assign('pre_but',$but);
+		}
 	}
 
 	public function deletePre(){
@@ -44,8 +47,10 @@ class ChairmanController extends BaseController{
 			echo "不能删除主席";
 			exit;
 		}
-
-		exit;
+		if( session('user_role') < 6){
+			echo "权限不够";
+			exit;
+		}
 		$a = $this->_presidum->changePre(I('post.presidum_id'),$content);
 		$pre = $this->_presidum->getPre(I('post.presidum_id'));
 		$role = '3';
@@ -64,8 +69,18 @@ class ChairmanController extends BaseController{
 		$this->ajaxReturn($stu);
 
 	}
-
+	public function checkrole(){
+		if( session('user_role') < 6){
+			$this->ajaxReturn('1');
+		}else{
+			$this->ajaxReturn('1');
+		}
+	}
 	public function addpre(){
+		if( session('user_role') < 6){
+			$this->ajaxReturn('0');
+			exit;
+		}
 		$this->_presidumInit();
 		$condition['studentnum'] = I('post.user_id');
 		$stu =$this->_users->findUsers($condition);
