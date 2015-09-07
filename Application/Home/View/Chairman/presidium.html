@@ -1,13 +1,7 @@
     <include file="Layout:header" />
     <!--LOADING STYLESHEET FOR PAGE-->
-    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/media/css/jquery.dataTables.css">
     <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/extensions/TableTools/css/dataTables.tableTools.min.css">
     <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/media/css/dataTables.bootstrap.css">
-    <style>
-        #table_id thead tr > th {
-            border-bottom: #efefef;
-        }
-    </style>
     <include file="Layout:slider" />
         <div id="page-wrapper">
             <div class="page-content">
@@ -21,7 +15,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="table-container">
-                                            <table id="table_id" class="table table-hover table-striped tablesorter display">
+                                            <table id="table_id" class="table table-hover tablesorter display">
                                                 <thead>
                                                     <tr>
                                                         <th>职位</th>
@@ -45,7 +39,7 @@
                                                             <td>{$presidum.phone}</td>
                                                             <td>{$presidum.academy}</td>
                                                             <td>{$presidum.update}</td>
-                                                            <td><button class="btn btn-default btn-xs userid-{$presidum.id}" need="author">删除</button></td>
+                                                            <td><button class="btn btn-default btn-xs userid-{$presidum.id}" need="author">删除 <i class="fa fa-edit"></i></button></td>
                                                         </tr>
                                                     </volist>
                                                 </tbody>
@@ -116,7 +110,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
-                                        <button type="button" class="btn btn-primary" id="submit">确认</button>
+                                        <button type="button" class="btn btn-primary" id="submit" need="author">确认</button>
                                     </div>
                                     </form>
                                 </div>
@@ -128,64 +122,69 @@
         </div>
 
     <include file="Layout:footer" />
-    <!--LOADING SCRIPTS FOR PAGE-->
-    <script src="__PUBLIC__/vendors/DataTables/media/js/jquery.dataTables.js"></script>
-    <script src="__PUBLIC__/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
-    <script src="__PUBLIC__/vendors/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="__PUBLIC__/vendors/DataTables/datatable.js"></script>
+        <!--LOADING SCRIPTS FOR PAGE-->
+        <script src="__PUBLIC__/vendors/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="__PUBLIC__/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="__PUBLIC__/vendors/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+        <script src="__PUBLIC__/vendors/DataTables/datatable.js"></script>
     <script>
           (function(){
-              var student, obj, ch;
+              var student, obj, ch, id;
               var text = ['name', 'gender', 'phone', 'academy'];
+              var info = ['user_id', 'organisation', 'position'];
               $('#studentID').bind('input propertychange', function() {
                   student = $(this);
-                  var id = student.val();
-                  $.post('{:U("Chairman/searchStudent")}', {studentID: id}).always(function(data, status) {
-                      ch = student.closest('.form-group').nextAll();
-                      ch.each(function(e) {
-                          obj = $(this).find('.col-md-9');
-                          obj.empty();
-                          if(obj.val() === '') {
-                              if(data == null) {
-                                  obj.append('暂无信息');
-                              } else {
-                                  obj.append(data[text[e]]);
+                  if(student.val().length == 10 && student.val() != id) {
+                      id = student.val();
+                      $.post('{:U("Chairman/searchStudent")}', {studentID: id}).always(function(data, status) {
+                          ch = student.closest('.form-group').nextAll();
+                          ch.each(function(e) {
+                              obj = $(this).find('.col-md-9');
+                              obj.empty();
+                              if(obj.val() === '') {
+                                  if(data == '') {
+                                      obj.attr('class', 'text-red col-md-9 control-label');
+                                      obj.append('对不起,你并没有查询此信息的权限');
+                                  } else {
+                                      obj.append(data[text[e]]);
+                                  }
                               }
+                          })
+                      }).done(function() {
+                          $("#submit").click(function() {
+                              var user_id = $("#studentID").val();
+                              var organisation = $("#organisation").val();
+                              var position = $("#position").val();
+                              var submit = this;
+                              $.post("{:U('Chairman/addpre')}", {
+                                  user_id: user_id,
+                                  organisation: organisation,
+                                  position: position
+                              }).done(function(data, status) {
+                                  alert(data['info']);
+                                  $(submit).attr('disabled', 'disabled');
+                                  parent.location.reload();
+                              });
+                          });
+                      }).fail(function() {
+                          alert('服务器内部错误, 请重试');
+                      })
+                  }
+              });
+              var button = $('tr > td > button');
+              $(button).each(function() {
+                  var obj = $(this);
+                  obj.on('click', function() {
+                      var clazz = this.className.split(' ');
+                      var id = clazz[clazz.length - 1].split('-')[1];
+                      $.post("{:U('Chairman/deletePre')}", {presidum_id:id}).done(function(data, status) {
+                          if(data['code'] == undefined) {
+                              alert(data['info']);
+                          } else {
+                              obj.closest('tr').remove();
                           }
                       })
-                  }).fail(function() {
-
-                  })
-              });
-
-              var button = $('tr > td > span');
-              $(button).each(function() {
-                  $(this).on('click', function() {
-                      var clazz = this.className.split(' ');
-                      var id = clazz[clazz.length - 1].substr(clazz.lastIndexOf('-'));
-                      $.post("{:U('Chairman/deletePre')}", {presidum_id:id}).done(function(data, status) {
-
-                      })
                   });
-              });
-              $("#submit").click(function(){
-                  var user_id=$("#studentID").val();
-                  var organisation=$("#organisation").val();
-                  var position=$("#position").val();
-                  $.post("{:U('Chairman/addpre')}",
-                          {
-                              user_id:user_id,
-                              organisation:organisation,
-                              position:position
-                          },
-                          function(data,status){
-                              if(data == 0) {
-                                  alert('输入信息有误');
-                              } else {
-                                  alert(data);
-                              }
-                              parent.location.reload();
-                          });
               });
             })();
     </script>

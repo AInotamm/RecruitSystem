@@ -20,11 +20,13 @@ class UsersModel extends Model {
 
 	public function checkgender($condition) {
 		$user_gender ='未设置';
-		if($condition == 1) {
-			$user_gender = '男';
-		} else if($condition == 0) {
-			$user_gender = '女';
-		}
+        if (is_numeric($condition)) {
+            if($condition == 1) {
+                $user_gender = '男';
+            } else if($condition == 0) {
+                $user_gender = '女';
+            }
+        }
 		return $user_gender;
 	}
 }
