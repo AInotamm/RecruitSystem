@@ -13,4 +13,9 @@ class UsersorganisationModel extends Model {
 		return $UO;
 	}
 
+	public function findUO($condition){
+		$this->setUO();
+		$UO = $this->_users_organisation->where($condition)->find();
+		return $UO;
+	}
 }
