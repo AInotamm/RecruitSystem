@@ -39,6 +39,15 @@ class BaseController extends Controller {
                 $condition['user_id'] = session('user_id');
                 $user_role = $this->_user_role->findUser_role($condition);
                 session('user_role',$user_role);
+                // $condition3['users_id'] = session('user_id');
+                // $now_dep = D('usersorganisation')->findUO($condition3);
+                // $condition4['id'] = $now_dep['department_id'];
+                // $nowdepa = D('department')->searchDep('')
+                $now_org = session('now_org');
+                $dep = D('department');
+                $user_id = session('user_id');
+                $now_dep = $dep->join('usersorganisation ON department.id = usersorganisation.department_id')->where("usersorganisation.users_id = '$user_id' AND department.organization_id = '$now_org'")->find();
+                session('now_dep',$now_dep['department_id']);
             }
         }
     }
@@ -59,6 +68,14 @@ class BaseController extends Controller {
         $this->_user_role = D('userrole');
         $user_role = $this->_user_role->findUser_role($condition);
         session('user_role',$user_role);
+
+        $now_org = session('now_org');
+        $dep = D('department');
+        $user_id = session('user_id');
+        $now_dep = $dep->join('usersorganisation ON department.id = usersorganisation.department_id')->where("usersorganisation.users_id = '$user_id' AND department.organization_id = '$now_org'")->find();
+        // var_dump($now_dep);exit;
+
+        session('now_dep',$now_dep['department_id']);
         $this->redirect('Index/index');
     }
 

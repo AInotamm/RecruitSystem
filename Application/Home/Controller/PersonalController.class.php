@@ -21,7 +21,6 @@ class PersonalController extends BaseController{
 	}
 
 	public function _showInfo(){
-		session('studentnum','2013211854');
 		$condition['studentnum'] = $_SESSION['studentnum'];
 		$stu = $this->_cinfo->where($condition)->find();
 
