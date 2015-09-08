@@ -1,6 +1,8 @@
         <include file="Layout:header" />
         <link rel="stylesheet" href="__PUBLIC__/css/department.css">
-        <script src="__PUBLIC__/js/department.js"></script>
+        <!--LOADING STYLESHEET FOR PAGE-->
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/extensions/TableTools/css/dataTables.tableTools.min.css">
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/DataTables/media/css/dataTables.bootstrap.css">
         <include file="Layout:slider" />
         <div id="page-wrapper">
 
@@ -10,10 +12,9 @@
                         <div class="screen">
                             <i class="fa fa-unsorted upAndDown"></i>
                             <ul id="tableactiondTab" class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#table_p" data-toggle="tab">{$firstdepa.department}</a></li>
-                                <volist name = "org_name" id = "org_name">
-                                    <li><a href="#table-{$org_name.use_id}" data-toggle="tab">{$org_name.department}</a></li>
+                                <li class="active"><a href="#table_p" data-toggle="tab">{$firstdepa.department}</a></li>
+                                <volist name="org_name" id="org_name">
+                                    <li><a href="#table-{$org_name.tab_id}" data-toggle="tab">{$org_name.department}</a></li>
                                 </volist>
                                 <li><a href="#table" data-toggle="tab">关于本部门</a></li>
                                 <li><button type="button" data-target="#modal-add-department" data-toggle="modal" class="btn btn-default glyphicon glyphicon-plus" style="font-size: 16px;background-color: transparent;border-color: transparent;"></button></li>
@@ -24,7 +25,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="table-container">
-                                            <table class="table table-hover">
+                                            <table id="table_id" class="table table-hover tablesorter display">
                                                 <thead>
                                                     <tr>
                                                         <th>职位</th>
@@ -37,7 +38,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <volist name = "first_meminfo" id ="first_meminfo">
+                                                    <volist name="first_meminfo" id="first_meminfo">
                                                         <tr>
                                                             <td>部长</td>
                                                             <td>{$first_meminfo.studentnum}</td>
@@ -54,12 +55,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <volist name = "org_name" id = "org_name">
-                                <div id="table-{$org_name.use_id}" class="tab-pane fade active in">
+                            <volist name="org_name" id="org_name">
+                                <div id="table-{$org_name.use_id}" class="tab-pane fade">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="table-container">
-                                                <table class="table table-hover">
+                                                <table class="table table-hover tablesorter display">
                                                     <thead>
                                                         <tr>
                                                             <th>职位</th>
@@ -72,8 +73,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        212123213
-                                                        <!-- <volist name = "first_meminfo" id ="first_meminfo">
+                                                        <volist name = "first_meminfo" id ="first_meminfo">
                                                             <tr>
                                                                 <td>部长</td>
                                                                 <td>{$first_meminfo.studentnum}</td>
@@ -83,7 +83,7 @@
                                                                 <td>{$first_meminfo.academy}</td>
                                                                 <td></td>
                                                             </tr>
-                                                        </volist> -->
+                                                        </volist>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -117,12 +117,12 @@
                             <button type="button" data-target="#modal-add-people" data-toggle="modal" class="btn btn-default" style="margin:auto;background-color: #fff;">人员添加</button>
                         </div>
                         </div>
-                        <div id="modal-add-people" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-label" aria-hidden="true" class="modal fade" style="display: none;">
+                        <div id="modal-add-people" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-people" aria-hidden="true" class="modal fade" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
-                                        <h4 id="modal-prompt-label" class="modal-title">新人员添加</h4>
+                                        <h4 id="modal-prompt-people" class="modal-title">新人员添加</h4>
                                     </div>
                                     <div class="modal-body">
                                         <form action="#" class="form-horizontal">
@@ -204,7 +204,7 @@
                                                     <label for="studentID" class="col-md-3 control-label">部门名称</label>
                                                     <div class="col-md-9">
                                                         <div class="input-icon right">
-                                                            <input id="studentID" type="text" placeholder="请输入新增部门的名称" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important">
+                                                            <input id="departmentID" type="text" placeholder="请输入新增部门的名称" class="form-control" style="height: 31px;font-size: 12px;-webkit-border-radius:4px !important;-moz-border-radius: 4px !important;border-radius: 4px !important">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -223,3 +223,11 @@
             </div>
         </div>
     <include file="Layout:footer" />
+        <!--LOADING SCRIPTS FOR PAGE-->
+        <script src="__PUBLIC__/vendors/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="__PUBLIC__/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="__PUBLIC__/vendors/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+        <!--<script src="__PUBLIC__/vendors/DataTables/datatable.js"></script>-->
+    <!--<script src="__PUBLIC__/js/department.js"></script>-->
+</body>
+</html>

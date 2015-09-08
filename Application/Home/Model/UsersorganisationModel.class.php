@@ -4,7 +4,7 @@ use Think\Model;
 class UsersorganisationModel extends Model {
 	private $_users_organisation;
 	public function setUO(){
-		$this->_users_organisation = M('usersorganisation');
+		$this->_users_organisation = M('organisation', 'users_');
 	}
 
 	public function checkUO($condition,$key){
