@@ -5,13 +5,13 @@
 //状态
 //
 //1 已录取，用户已确认
-//2 录取中，用户已超过一天未确认
-//3 录取中，待用户确认
+//2 录取中，用户已超过一天未确认 (失效)
+//3 录取中，待用户确认 (失效)
 //4 已通过
 //5 待审核
 //6 未通过
 //7 用户已取消
-//8 用户已被其他校级组织录取
+//8 用户已被其他校级组织录取 (失效)
 
 //排序 搜索
 
@@ -21,18 +21,12 @@ var c = ["男","女"];
 var d = ["软件学院","计算机学院","通信学院","传媒学院","自动化学院","外国语学院","经管学院"];
 var info = [];
 
-for(var i = 0 ; i <43 ; i++){
+for(var i = 0 ; i < 43 ; i++) {
     var INFO = [i,parseInt(10000*Math.random()),20142100000+parseInt(40000*Math.random()),a[parseInt(96*Math.random())]+b[parseInt(216*Math.random())],c[parseInt(1.5*Math.random())],10000000000+parseInt(10000000000*Math.random()),d[parseInt(7*Math.random())],parseInt(1.5*Math.random()),parseInt(8*Math.random())+1,""];
     info[i] = [];
     info[i] = INFO;
 }
-console.log(info);
-
 var $Obj = $(".info-table-tboby");
-
-
-
-
 
 var searchArr = info.slice(0);
 var $pointer = $(".pointer");
@@ -125,20 +119,20 @@ function replaceArrayElement(input, searchText, pattern, temp) {
     }
 }
 
-function partition(array,num,first,end){
+function partition(array,num,first,end) {
     var i = first;
     var j = end;
     var mid = [];
-    while(i<j){
-        while (i<j && array[i][num]<=array[j][num]) j--;
-        if(i<j){
+    while(i < j) {
+        while (i < j && array[i][num] <= array[j][num]) j--;
+        if(i < j) {
             mid = array[i];
             array[i] = array[j];
             array[j] = mid;
             i++;
         }
-        while (i<j && array[i][num]<=array[j][num]) i++;
-        if(i<j){
+        while (i < j && array[i][num] <= array[j][num]) i++;
+        if(i < j){
             mid = array[i];
             array[i] = array[j];
             array[j] = mid;
@@ -149,7 +143,7 @@ function partition(array,num,first,end){
 }
 
 function quickSort(array,num,first,end){
-    if(first<end){
+    if(first < end){
         var pivot = partition(array,num,first,end);
         quickSort(array,num,first,pivot-1);
         quickSort(array,num,pivot+1,end);
@@ -159,25 +153,25 @@ function quickSort(array,num,first,end){
 function creatStus() {
     $("#info").html("点击显示更多");
     if(indexSortNum == 0){
-        for(var i = 0; i < 20; i++){
-            if(i+indexNum>infoLen){
+        for(var i = 0; i < 20; i++) {
+            if(i+indexNum>infoLen) {
                 $("#info").html("没有更多了");
-            }else {
+            } else {
                 creatStu($Obj, searchArr[i + indexNum]);
             }
         }
-    }else{
-        for(var i = 0; i < 20; i++){
-            if(i+indexNum>infoLen){
+    } else {
+        for(var i = 0; i < 20; i++) {
+            if(i+indexNum>infoLen) {
                 $("#info").html("没有更多了");
-            }else {
+            } else {
                 creatStu($Obj, searchArr[infoLen - (i + indexNum)]);
             }
         }
     }
 }
 
-function creatStu(obj,info){
+function creatStu(obj,info) {
 
     var tr = $("<tr>",{
         "data-id" : info[0],
@@ -186,7 +180,7 @@ function creatStu(obj,info){
         "data-toggle":"modal"
     }).appendTo(obj);
 
-    tr.on("click",function(){
+    tr.on("click",function() {
         var id = $(this).data("id");
         $form.find(".name .col-md-8").html(info[3]);
         $form.find(".sex .col-md-8").text(info[4]);
@@ -196,7 +190,7 @@ function creatStu(obj,info){
         $form.find(".phoneNum .col-md-8").html(info[5]);
         $form.find(".introduction .col-md-8").text(info[9]);
         var infomation = "";
-        switch (info[8]){
+        switch (info[8]) {
             case 1:
                 infomation = "已录取，用户已确认";
                 $refuse.css("display","none");

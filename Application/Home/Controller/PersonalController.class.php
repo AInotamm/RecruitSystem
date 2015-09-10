@@ -17,11 +17,10 @@ class PersonalController extends BaseController{
 		$this->_cinfo = M('users');
 		$this->_userRole = M('userrole');
 		$this->_role = M('role');
-		$this->academy = M('academy');		
+		$this->_academy = M('academy');
 	}
 
 	public function _showInfo(){
-		session('studentnum','2013211854');
 		$condition['studentnum'] = $_SESSION['studentnum'];
 		$stu = $this->_cinfo->where($condition)->find();
 
@@ -35,8 +34,7 @@ class PersonalController extends BaseController{
 		$stu['grade'] = substr($stu['studentnum'],0,4);
 
 		$condtion4['id'] = $stu['academy_id'];
-		$condtion4['school_id'] = $stu['school_id'];
-		$stu_academy = $this->academy->where($condtion4)->field('academy')->find();
+		$stu_academy = $this->_academy->where($condtion4)->field('academy')->find();
 		$stu['academy'] = $stu_academy['academy'];
 		if($stu['gender'] == 1){
 			$stu['gender'] = '男';

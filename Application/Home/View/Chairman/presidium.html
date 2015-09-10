@@ -162,8 +162,12 @@
                                   position: position
                               }).done(function(data, status) {
                                   alert(data['info']);
-                                  $(submit).attr('disabled', 'disabled');
-                                  parent.location.reload();
+                                  if(!data['status']) {
+                                      $(submit).attr('disabled', 'disabled');
+                                  }
+                                  if(data['status'] == 200) {
+                                      parent.location.reload();
+                                  }
                               });
                           });
                       }).fail(function() {

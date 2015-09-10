@@ -1,11 +1,11 @@
 
-.screen{
+.screen {
     height: 39px;
     overflow: hidden;
     position: relative;
     padding-right: 35px;
 }
-.screen>i{
+.screen > i {
     position: absolute;
     right: 15px;
     top:8px;
@@ -13,7 +13,7 @@
     cursor: pointer;
     display: none;
 }
-.screen ul{
+.screen ul {
     position: relative;
     top:0px;
     transition:top;

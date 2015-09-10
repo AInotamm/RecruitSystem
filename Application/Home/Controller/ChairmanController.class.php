@@ -12,16 +12,7 @@ class ChairmanController extends BaseController{
 	public function index(){
 		$this->_presidumInit();
 		$this->_presidumVal();
-        $html = $this->fetch('Chairman/presidium');
-        $html = preg_replace('/\sneed=\"author\"/', $this->checkrole(), $html);
-        if(isset($html)) {
-            header('Content-Type:' . C('DEFAULT_CHARSET') . '; charset=' . C('TMPL_CONTENT_TYPE'));
-            header('Cache-control: ' . C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
-            header('X-Powered-By:ThinkPHP');
-            echo $html;
-        } else {
-            $this->redirect('Errors/503');
-        }
+        $this->show('Chairman/presidium', 'Errors/503');
 	}
 
 	private function _presidumInit(){
@@ -70,7 +61,7 @@ class ChairmanController extends BaseController{
 		$this->_presidumInit();
 		$condition['studentnum'] = I('post.studentID');
 		$stu = $this->_users->findUsers($condition);
-		if(isset($stu) && session('user_role') == 7) {
+		if(session('user_role') == 7) {
             if(!empty($stu)) {
                 $academy = $this->_academy->findAcademy(array('id' => $stu['academy_id']));
                 $stu['academy'] = $academy;
@@ -92,12 +83,14 @@ class ChairmanController extends BaseController{
 		$this->_presidumInit();
 		$stu = $this->_users->findUsers(array('studentnum' => I('post.user_id')));
 		if(isset($stu)){
-			$academy = $this->_academy->findAcademy(array('id' => 'academy_id'));
+			$academy = $this->_academy->findAcademy(array('id' => $stu['academy_id']));
 			$gender = $this->_users->checkgender($stu['gender']);
 			$this->_user_role->addOne($stu['id'],I('post.position'));
 			$last = $this->_presidum->addPresidum($stu, $academy, $gender, '副主席');
-            if($last) $this->ajaxReturn(array('info' => '职位添加成功.'));
-		}
+            if($last) $this->ajaxReturn(array('status' => 200, 'info' => '职位添加成功.'));
+		} else {
+            $this->ajaxReturn(array('status' => 404, 'info' => '职位添加失败, 请确认此人学号是否正确'));
+        }
 	}
 	
 	public function _empty() {

@@ -2,6 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
+/** @noinspection PhpUndefinedClassInspection */
 class LoginController extends Controller {
 	private $studentNum = '';
 	private $password = '';
@@ -15,15 +16,16 @@ class LoginController extends Controller {
     private function _getInfo(){
     	$cinfo = D('users');
     	$nowtime = time();
-    	session('testnum','0');
-    	$condition['studentnum'] = $this->studentNum;
-    	$condition['password'] = $this->password;
+//    	session('testnum','0');
+        $condition = array(
+            'studentnum' => $this->studentNum,
+            'password' => $this->password
+        );
     	$stu = $cinfo->findUsers($condition);
     	if($stu) {
             if($stu['state'] == '1') {
         		$this->initSession($stu);
-        		$content['updated_at'] = date("Y-m-d H:i:s", time());
-        		$cinfo->where($condition)->save($content);
+        		$cinfo->where($condition)->save(array('updated_at' => date("Y-m-d H:i:s", $nowtime)));
                 $this->assign(array(
                     'checkLogin' => '退出登录',
                     'checkState' => U(CONTROLLER_NAME . '/destroySession')
@@ -33,16 +35,18 @@ class LoginController extends Controller {
             } else {
                 $this->error('账号已跪');
             }
-    	} else if(session('testnum') == 5) {
-    		if(!session('?lasttime')) {
-    			session('lasttime',$nowtime);
-    		} else if($nowtime - session('lasttime') < 600) {
-                echo 0;
-    		} else {
-    			session('testnum',0);
-    		}
-            $this->error('超过尝试次数');
-    	} else {
+    	}
+//        else if(session('testnum') == 5) {
+//    		if(!session('?lasttime')) {
+//    			session('lasttime',$nowtime);
+//    		} else if($nowtime - session('lasttime') < 600) {
+//                echo 0;
+//    		} else {
+//    			session('testnum',0);
+//    		}
+//            $this->error('超过尝试次数');
+//    	}
+        else {
     		session('testnum',session('testnum') + 1);
             $this->error('密码错误');
     	}

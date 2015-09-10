@@ -15,12 +15,13 @@ class PresidumModel extends Model {
 
 	public function addPresidum($stu,$academy,$gender,$position){
 		$this->setPresidum();
-		$condition['user_id'] = $stu['id'];
-		$condition['organisation'] = session('now_org');
-		$pre = $this->findPresidum($condition);
+		$pre = $this->findPresidum(array(
+            'user_id' => $stu['id'],
+            'organisation' => session('now_org')
+        ));
 
-		if($pre) {
-			echo "该主席已存在"; exit;
+		if(empty($pre)) {
+			return false;
 		} else {
             $content = array(
                 'name' => $stu['name'],
@@ -34,6 +35,7 @@ class PresidumModel extends Model {
                 'update' => date('Y-m-d H:i:s', time()),
             );
 			$this->_presidum->add($content);
+            return $this->_presidum->getLastInsID();
 		}
 
 	}

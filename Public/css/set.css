@@ -1,0 +1,36 @@
+.bwizard-steps-o{
+    padding-left: 10%;
+}
+.bwizard-steps-o li:first-child{
+    margin-left: 0 !important;
+}
+.bwizard-steps-o li{
+    margin-right: -40px;
+}
+input.form-control,select,textarea{
+    font-size: 12px !important;
+    color: #333;
+}
+input,select{
+    height: 31px !important;
+}
+input.form-control,textarea.form-control{
+    -webkit-border-radius:4px !important;
+    -moz-border-radius: 4px !important;
+    border-radius: 4px !important
+}
+#progress.inner-progress {
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    margin-top: 30px;
+}
+/*#rootwizard-custom-circle:before {*/
+    /*content: "";*/
+    /*height: 3px;*/
+    /*width: attr(data-width);*/
+    /*background-color: #5CB85C;*/
+    /*position: absolute;*/
+    /*top: 30px;*/
+    /*left: 0;*/
+/*}*/
